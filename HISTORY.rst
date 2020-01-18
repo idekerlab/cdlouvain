@@ -2,6 +2,15 @@
 History
 =======
 
+0.1.1 (2020-01-17)
+------------------
+
+* Fixed ``IndexError: list index out of range`` error that could
+  occur if the algorithm failed to generate any clusters
+
+* Updated code to output stacktrace showing line of code containing
+  error when an exception is raised
+
 0.1.0 (2020-01-06)
 ------------------
 
