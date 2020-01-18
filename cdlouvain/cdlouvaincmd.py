@@ -3,6 +3,7 @@
 import os
 import sys
 import argparse
+import traceback
 import louvain
 import igraph
 
@@ -228,6 +229,9 @@ def run_louvain(graph, config_model='Default',
         clusts_layers = []
         for p in partitions:
             clusts_layers.append(partition_to_clust(G, p))
+        if len(clusts_layers) == 0:
+            sys.stderr.write("No clusters generated from algorithm")
+            return 1
         if len(clusts_layers[0]) == 0:
             sys.stderr.write("No cluster; Resolution parameter may be too extreme")
             return 1
@@ -275,7 +279,8 @@ def main(args):
                            resolution_parameter=theargs.resolution_parameter, seed=theargs.seed)
 
     except Exception as e:
-        sys.stderr.write('Caught exception: ' + str(e))
+        sys.stderr.write('\n\nCaught exception: ' + str(e))
+        traceback.print_exc()
         return 2
 
 
