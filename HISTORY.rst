@@ -2,6 +2,13 @@
 History
 =======
 
+0.2.0 (2020-02-18)
+-------------------
+
+* Added more human readable error messages
+
+* Improved hierarchy generation
+
 0.1.1 (2020-01-17)
 ------------------
 
