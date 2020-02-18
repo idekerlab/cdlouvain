@@ -7,6 +7,9 @@ import traceback
 import louvain
 import igraph
 
+DEFAULT_ERR_MSG = ('Did not get any clusters from Louvain. This could be' +
+                   'due to a network that is too connected or ' +
+                   ' the resolution parameter is too extreme\n')
 
 def _parse_arguments(desc, args):
     """
@@ -114,8 +117,9 @@ def run_louvain(graph, config_model='Default',
             graph.append(net)
 
     if multi == True and deep == True:
-        sys.stderr.write('louvain does not support hierarchical clustering with overlapped communities')
-        sys.exit()
+        sys.stderr.write('louvain does not support hierarchical '
+                         'clustering with overlapped communities\n')
+        return 1
 
     if config_model == 'RB':
         partition_type = louvain.RBConfigurationVertexPartition
@@ -128,8 +132,8 @@ def run_louvain(graph, config_model='Default',
     elif config_model == "Significance":
         partition_type = louvain.SignificanceVertexPartition
     else:
-        sys.stderr.write("Not specifying the configuration model; "
-                         "perform simple Louvain.")
+        sys.stderr.write("Configuration model not set "
+                         "performing simple Louvain.\n")
         partition_type = louvain.ModularityVertexPartition
 
     weighted = False
@@ -151,8 +155,10 @@ def run_louvain(graph, config_model='Default',
                 if weighted == True:
                     elts[2] = float(elts[2])
                     if elts[2] < 0:
-                        sys.stderr.write("negative edge weight not allowed")
-                        return 1
+                        sys.stderr.write('encountered a negative edge weight '
+                                         'on row ' + str(i) + ' (' +
+                                         str(lines[i]) + ') which is not allowed\n')
+                        return 2
                 lines[i] = tuple(elts)
             g = igraph.Graph.TupleList(lines, directed=directed,
                                        weights=weighted)
@@ -172,10 +178,10 @@ def run_louvain(graph, config_model='Default',
 
     else:
         if not os.path.isfile(graph):
-            sys.stderr.write(str(graph) + ' is not a file')
+            sys.stderr.write(str(graph) + ' is not a file\n')
             return 3
         if os.path.getsize(graph) == 0:
-            sys.stderr.write(str(graph) + ' is an empty file')
+            sys.stderr.write(str(graph) + ' is an empty file\n')
             return 4
         with open(graph, 'r') as f:
             lines = f.read().splitlines()
@@ -192,8 +198,10 @@ def run_louvain(graph, config_model='Default',
             if weighted is True:
                 elts[2] = float(elts[2])
                 if elts[2] < 0:
-                    sys.stderr.write("negative edge weight not allowed")
-                    return 1
+                    sys.stderr.write('encountered a negative edge weight '
+                                     'on row ' + str(i) + ' (' +
+                                     str(lines[i]) + ') which is not allowed\n')
+                    return 3
             lines[i] = tuple(elts)
         f.close()
 
@@ -214,8 +222,8 @@ def run_louvain(graph, config_model='Default',
     if deep == False:
         clusts = partition_to_clust(G, partition)
         if len(clusts) == 0:
-            sys.stderr.write("No cluster; Resolution parameter may be too extreme")
-            return 1
+            sys.stderr.write(DEFAULT_ERR_MSG)
+            return 4
 
         maxNode = 0
         for clust in clusts:
@@ -231,11 +239,11 @@ def run_louvain(graph, config_model='Default',
         for p in partitions:
             clusts_layers.append(partition_to_clust(G, p))
         if len(clusts_layers) == 0:
-            sys.stderr.write("No clusters generated from algorithm")
-            return 1
+            sys.stderr.write(DEFAULT_ERR_MSG)
+            return 5
         if len(clusts_layers[0]) == 0:
-            sys.stderr.write("No cluster; Resolution parameter may be too extreme")
-            return 1
+            sys.stderr.write(DEFAULT_ERR_MSG)
+            return 6
         maxNode = 0
         for clust in clusts_layers[0]:
             maxNode = max(maxNode, max(clust))
