@@ -7,7 +7,7 @@ import traceback
 import louvain
 import igraph
 
-DEFAULT_ERR_MSG = ('Did not get any clusters from Louvain. This could be' +
+DEFAULT_ERR_MSG = ('Did not get any clusters from Louvain. This could be ' +
                    'due to a network that is too connected or ' +
                    ' the resolution parameter is too extreme\n')
 
