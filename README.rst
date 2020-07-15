@@ -2,21 +2,6 @@
 Community Detection Louvain
 ===================================================
 
-.. image:: https://img.shields.io/pypi/v/cdlouvain.svg
-        :target: https://pypi.python.org/pypi/cdlouvain
-
-.. image:: https://img.shields.io/travis/idekerlab/cdlouvain.svg
-        :target: https://travis-ci.org/idekerlab/cdlouvain
-
-.. image:: https://readthedocs.org/projects/cdlouvain/badge/?version=latest
-        :target: https://cdlouvain.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
-
-.. image:: https://requires.io/github/idekerlab/cdlouvain/requirements.svg?branch=master
-        :target: https://requires.io/github/idekerlab/cdlouvain/requirements?branch=master
-        :alt: Dependencies
-
-
 This repository creates a CDAPS compatible community detection Docker image using Louvain
 packaged from https://louvain-igraph.readthedocs.io/en/latest/index.html
 
